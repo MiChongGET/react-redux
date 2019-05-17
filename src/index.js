@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {Provider} from 'react-redux'
 
-import App from './components/app';
+import App from './containers/app';
 import store from './redux/store'
 
-//初始化绘制
-ReactDOM.render(<App store={store}/>, document.getElementById('root'));
+function init() {
+    //初始化绘制
+    ReactDOM.render(<Provider store={store}>
+        <App/>
+    </Provider>, document.getElementById('root'));
+}
 
-//订阅监听之后重绘
-store.subscribe(function () {
-    ReactDOM.render(<App store={store}/>, document.getElementById('root'));
-
-})
+//初始化绘制页面
+init()

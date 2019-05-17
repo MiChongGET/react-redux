@@ -1,27 +1,8 @@
 import React, {Component} from 'react'
+//取出模块中的所有对象
+import * as action from '../redux/action'
 
 export default class App extends Component {
-
-    state = {
-        count: 2
-    }
-
-    increment = () => {
-
-        //获取option的值
-        const number = this.select.value * 1
-        let count = this.state.count
-        count = count + number
-        this.setState({count})
-    }
-
-    reduce = () => {
-        const number = this.select.value * 1
-        let count = this.state.count
-        count = count - number
-        this.setState({count})
-    }
-
 
     componentDidMount() {
         // //高德地图查询用户所在城市
@@ -41,29 +22,58 @@ export default class App extends Component {
         // })
     }
 
+
+    increment = () => {
+
+        //1、获取option的值
+        const number = this.select.value * 1
+        //2、调用store的方法更新状态
+        this.props.store.dispatch(
+            action.increment(number)
+        )
+
+    }
+
+    reduce = () => {
+        //1、获取option的值
+        const number = this.select.value * 1
+        //2、调用store的方法更新状态
+        this.props.store.dispatch(
+            action.decrement(number)
+        )
+    }
+
+
     incrementIfOdd = () => {
         const number = this.select.value * 1
-        let count = this.state.count
+        let count = this.props.store.getState()
         if (count % 2 == 0) {
-            this.setState({count: count + number})
+            this.props.store.dispatch(
+                action.increment(number)
+            )
         }
     }
 
     incrementAsync = () => {
         //获取option的值
         const number = this.select.value * 1
-        let count = this.state.count
+        let count = this.props.store.getState()
         count = count + number
         setTimeout(() => {
-            this.setState({count})
+            this.props.store.dispatch(
+                action.increment(number)
+            )
         }, 1000)
 
     }
 
     render() {
+
+        const count = this.props.store.getState()
+
         return (
             <div>
-                <h1>click {this.state.count} times</h1>
+                <h1>click {count} times</h1>
                 <div>
                     <select ref={select => this.select = select}>
                         <option value='1'>1</option>

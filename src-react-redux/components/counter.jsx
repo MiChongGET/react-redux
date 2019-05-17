@@ -24,8 +24,7 @@ export default class Counter extends Component {
     static propTypes = {
         count: PropTypes.number.isRequired,
         increment: PropTypes.func.isRequired,
-        decrement: PropTypes.func.isRequired,
-        incrementAsync: PropTypes.func.isRequired
+        decrement: PropTypes.func.isRequired
     }
 
     increment = () => {
@@ -47,13 +46,21 @@ export default class Counter extends Component {
 
     incrementIfOdd = () => {
         const number = this.select.value * 1
-
+        let count = this.props.store.getState()
+        if (count % 2 == 0) {
+            this.props.increment(number)
+        }
     }
 
     incrementAsync = () => {
         //获取option的值
         const number = this.select.value * 1
-        this.props.incrementAsync(number)
+        let count = this.props.store.getState()
+        count = count + number
+        setTimeout(() => {
+            this.props.increment(number)
+        }, 1000)
+
     }
 
     render() {
